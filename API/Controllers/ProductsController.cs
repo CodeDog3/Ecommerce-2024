@@ -2,6 +2,7 @@ using System;
 using Azure.Core.Pipeline;
 using Core.Entities;
 using Core.Interfaces;
+using Core.Specifications;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +19,11 @@ public class ProductsController (IGenericRepository<Product> _repo): ControllerB
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Product>>> getProducts(string? brand, string? type, string? sort){
-        return Ok(await _repo.ListAllAsync());
+
+        var spec = new ProductSpecification(brand,type,sort);
+        var products = await _repo.ListAsync(spec);
+
+        return Ok(products);
     }
 
     [HttpGet("{id:int}")]
