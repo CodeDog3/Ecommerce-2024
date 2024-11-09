@@ -72,15 +72,17 @@ public class ProductsController (IGenericRepository<Product> _repo): ControllerB
        return BadRequest();
     }
 
-    // [HttpGet("{brands}")]
-    // public async Task<ActionResult<IEnumerable<string>>> GetBrands(){
-    //     return Ok(await _repo.GetBrandsAsync());
-    // }
+    [HttpGet("brands")]
+    public async Task<ActionResult<IEnumerable<string>>> GetBrands(){
+        var spec = new BrandListSpecification();
+        return Ok(await _repo.ListAsync(spec));
+    }
 
-    // [HttpGet("type")]
-    // public async Task<ActionResult<IEnumerable<string>>> GetTypes(){
-    //     return Ok(await _repo.GetTypesAsync());
-    // }
+    [HttpGet("types")]
+    public async Task<ActionResult<IEnumerable<string>>> GetTypes(){
+        var spec = new TypeListSpecification();
+        return Ok(await _repo.ListAsync(spec));
+    }
 
 
     private bool ProductExists (int id){
